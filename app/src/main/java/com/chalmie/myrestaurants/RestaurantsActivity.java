@@ -1,6 +1,7 @@
 package com.chalmie.myrestaurants;
 
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 public class RestaurantsActivity extends AppCompatActivity {
     private TextView mLocationTextView;
     private ListView mListView;
+    private Toast mToastToShow;
     private String[] restaurants = new String[] {"Mi Mero Mole", "Mother's Bistro",
             "Life of Pie", "Screen Door", "Luc Lac", "Sweet Basil",
             "Slappy Cakes", "Equinox", "Miss Delta's", "Andina",
@@ -32,8 +34,25 @@ public class RestaurantsActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int toastDurationInMilliSeconds = 1000;
                 String restaurant = ((TextView)view).getText().toString();
-                Toast.makeText(RestaurantsActivity.this, restaurant, Toast.LENGTH_SHORT).show();
+                mToastToShow = Toast.makeText(RestaurantsActivity.this, restaurant, Toast.LENGTH_LONG);
+
+                CountDownTimer toastCountDown;
+                toastCountDown = new CountDownTimer(toastDurationInMilliSeconds, 1000) {
+                    @Override
+                    public void onTick(long l) {
+                        mToastToShow.show();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        mToastToShow.cancel();
+                    }
+                };
+
+                mToastToShow.show();
+                toastCountDown.start();
             }
         });
 
